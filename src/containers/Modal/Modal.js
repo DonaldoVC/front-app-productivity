@@ -10,6 +10,9 @@ import Badge from 'react-bootstrap/Badge';
 
 import swal from 'sweetalert';
 
+import TimePicker from "rc-time-picker";
+import moment from "moment";
+
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars, faClock, faTrash, faTimes, faCheck, faRedo} from "@fortawesome/free-solid-svg-icons";
 
@@ -17,7 +20,7 @@ import {changeStatus, deleteTask, modifyTask, reset} from "../../actions/task.ac
 
 import {formatTime} from "../../utils/format";
 
-import {BIG, MID, SMALL} from "../../constants";
+import {BIG, LIMIT, MID, SMALL} from "../../constants";
 
 import styles from './modal.module.css';
 
@@ -32,6 +35,7 @@ const ModalContent = ({task, time, show, handleClose}) => {
     toEdit: false,
     estimated: task.estimated
   });
+  const [showPicker, setShowPicker] = useState(false);
 
   const handleDeleteTask = () => {
     swal({
@@ -99,7 +103,8 @@ const ModalContent = ({task, time, show, handleClose}) => {
               }
 
               {!editDescription.toEdit && task.description !== '' ? (
-                <p className={`txt ${styles.description}`} onClick={() => setEditDescription({...editDescription, toEdit: true})}>
+                <p className={`txt ${styles.description}`}
+                   onClick={() => setEditDescription({...editDescription, toEdit: true})}>
                   {task.description}
                 </p>
               ) : (
@@ -107,8 +112,10 @@ const ModalContent = ({task, time, show, handleClose}) => {
                   <FormControl as={"textarea"} className={`txt ${styles.editDescription}`}
                                defaultValue={task.description}
                                onChange={(e) => setEditDescription({...editDescription, description: e.target.value})}/>
-                  <Button variant={"success"} size={"sm"} className={styles.save} onClick={handleUpdate}>Guardar</Button>
-                  <FontAwesomeIcon onClick={() => setEditDescription({...editDescription, toEdit: false})} className={styles.close} icon={faTimes}/>
+                  <Button variant={"success"} size={"sm"} className={styles.save}
+                          onClick={handleUpdate}>Guardar</Button>
+                  <FontAwesomeIcon onClick={() => setEditDescription({...editDescription, toEdit: false})}
+                                   className={styles.close} icon={faTimes}/>
                 </>
               )}
             </div>
@@ -117,7 +124,8 @@ const ModalContent = ({task, time, show, handleClose}) => {
               <p>
                 <FontAwesomeIcon className="mr-2" icon={faClock}/>
                 Duración
-                <Button className="ml-2" variant={"light"} size={"sm"} onClick={() => setEditTime({...editTime, toEdit: true})}>Editar</Button>
+                <Button className="ml-2" variant={"light"} size={"sm"}
+                        onClick={() => setEditTime({...editTime, toEdit: true})}>Editar</Button>
               </p>
               {!editTime.toEdit && task.description !== '' ? (
                 <p className={`txt ${styles.description}`} onClick={() => setEditTime({...editTime, toEdit: true})}>
@@ -125,14 +133,37 @@ const ModalContent = ({task, time, show, handleClose}) => {
                 </p>
               ) : (
                 <>
-                  <FormControl as={"select"} className={`txt ${styles.description}`} onChange={(e) => setEditTime({...editTime, estimated: e.target.value})}>
+                  <FormControl as={"select"} className={`txt ${styles.description}`}
+                               onChange={(e) => {
+                                 if (e.target.value === 'picker') {
+                                   setShowPicker(true)
+                                 } else {
+                                   setEditTime({...editTime, estimated: e.target.value})
+                                 }
+                               }}>
                     <option value={SMALL}>Corta: 30 min</option>
                     <option value={MID}>Media: 45 min</option>
                     <option value={BIG}>Larga: 1 hr</option>
                     <option>Otro</option>
                   </FormControl>
-                  <Button variant={"success"} size={"sm"} className={styles.save} onClick={handleUpdate}>Guardar</Button>
-                  <FontAwesomeIcon onClick={() => setEditTime({...editTime, toEdit: false})} className={styles.close} icon={faTimes}/>
+
+                  {showPicker &&
+                  <TimePicker value={moment(formatTime(task.time), "HH:mm:ss")} className={styles.picker}
+                    onChange={(value) => {
+                      if (moment(value).diff(moment().startOf('day'), 'seconds') <= LIMIT) {
+                        setEditTime({
+                          ...editTime,
+                          estimated: moment(value).diff(moment().startOf('day'), 'seconds')
+                        })
+                      } else {
+                        setEditTime({...task, estimated: 0, time: 0})
+                      }
+                    }}/>}
+
+                  <Button variant={"success"} size={"sm"} className={styles.save}
+                          onClick={handleUpdate}>Guardar</Button>
+                  <FontAwesomeIcon onClick={() => setEditTime({...editTime, toEdit: false})} className={styles.close}
+                                   icon={faTimes}/>
                 </>
               )}
             </div>
@@ -163,7 +194,8 @@ const ModalContent = ({task, time, show, handleClose}) => {
                     onClick={handleReset}>
               <FontAwesomeIcon icon={faCheck}/> Finalizar
             </Button>}
-            <Button className={`float-right ${styles.button}`} size={"sm"} variant={"danger"} onClick={handleDeleteTask}>
+            <Button className={`float-right ${styles.button}`} size={"sm"} variant={"danger"}
+                    onClick={handleDeleteTask}>
               <FontAwesomeIcon icon={faTrash}/> Eliminar
             </Button>
           </Col>

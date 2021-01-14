@@ -21,7 +21,8 @@ import {
 import {
   SMALL,
   MID,
-  BIG
+  BIG,
+  LIMIT
 } from './time'
 
 export {
@@ -45,5 +46,6 @@ export {
 
   SMALL,
   MID,
-  BIG
+  BIG,
+  LIMIT
 }

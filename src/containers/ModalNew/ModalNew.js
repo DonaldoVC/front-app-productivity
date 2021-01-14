@@ -7,6 +7,9 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import FormControl from 'react-bootstrap/FormControl';
 
+import TimePicker from 'rc-time-picker';
+import moment from "moment";
+
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars, faClock, faCheck, faTimes, faFileSignature} from "@fortawesome/free-solid-svg-icons";
 
@@ -15,7 +18,9 @@ import {getSections} from "../../actions/section.action";
 
 import {selectTask} from "../../selectors/task.selector";
 
-import {BIG, MID, SMALL} from "../../constants";
+import {BIG, MID, SMALL, LIMIT} from "../../constants";
+
+import {formatTime} from "../../utils/format";
 
 import styles from './modalNew.module.css';
 
@@ -31,6 +36,7 @@ const ModalContent = ({section, show, handleClose}) => {
   const dispatch = useDispatch();
 
   const [task, setTask] = useState(defaultTask);
+  const [showPicker, setShowPicker] = useState(false);
 
   const taskSelect = useSelector(selectTask);
 
@@ -89,13 +95,32 @@ const ModalContent = ({section, show, handleClose}) => {
               </p>
 
               <FormControl as={"select"} className={`txt ${styles.description}`}
-                           onChange={(e) => setTask({...task, estimated: e.target.value, time: e.target.value})}>
+                           onChange={(e) => {
+                             if (e.target.value === 'picker') {
+                               setShowPicker(true)
+                             } else {
+                               setTask({...task, estimated: e.target.value, time: e.target.value})
+                             }
+                           }}>
                 <option value={0}>Selecciona una opción</option>
                 <option value={SMALL}>Corta: 30 min</option>
                 <option value={MID}>Media: 45 min</option>
                 <option value={BIG}>Larga: 1 hr</option>
-                <option>Otro</option>
+                <option value={'picker'}>Otro</option>
               </FormControl>
+
+              {showPicker &&
+              <TimePicker value={moment(formatTime(task.time), "HH:mm:ss")} className={styles.picker} onChange={(value) => {
+                if (moment(value).diff(moment().startOf('day'), 'seconds') <= LIMIT) {
+                  setTask({
+                    ...task,
+                    estimated: moment(value).diff(moment().startOf('day'), 'seconds'),
+                    time: moment(value).diff(moment().startOf('day'), 'seconds')
+                  })
+                } else {
+                  setTask({...task, estimated: 0, time: 0})
+                }
+              }}/>}
             </div>
           </Col>
           <Col md={3}>
