@@ -58,7 +58,7 @@ const Task = ({task, filter}) => {
   if (filter) {
     return (
       <>
-        <Card id={task._id} className={styles.container} onClick={handleShow}>
+        <Card onClick={handleShow}>
           <Card.Body>
             <p className="txt">{task.name}</p>
 

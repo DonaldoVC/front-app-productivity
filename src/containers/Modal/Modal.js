@@ -186,12 +186,12 @@ const ModalContent = ({task, time, show, handleClose}) => {
             </Button>}
             {task.status !== 1 && task.status !== 2 &&
             <Button className={`float-right ${styles.button}`} size={"sm"} variant={"dark"}
-                    onClick={() => handleChangeStatus(1)}>
+                    onClick={handleReset}>
               <FontAwesomeIcon icon={faRedo}/> Reiniciar
             </Button>}
             {task.status !== 1 && task.status !== 2 &&
             <Button className={`float-right ${styles.button}`} size={"sm"} variant={"success"}
-                    onClick={handleReset}>
+                    onClick={() => handleChangeStatus(2)}>
               <FontAwesomeIcon icon={faCheck}/> Finalizar
             </Button>}
             <Button className={`float-right ${styles.button}`} size={"sm"} variant={"danger"}

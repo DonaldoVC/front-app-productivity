@@ -220,3 +220,23 @@ export const deleteTask = (task) => {
     }
   }
 }
+
+export const order = (task) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API}/task/order`, {data: {task}});
+
+      dispatch({
+        type: MODIFY_TASK,
+        task: response.data,
+        status: response.status
+      });
+    } catch (e) {
+      dispatch({
+        type: MODIFY_TASK_ERROR,
+        error: e,
+        status: 500
+      });
+    }
+  }
+}
