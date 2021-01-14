@@ -1,0 +1,11 @@
+.loader {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    position: fixed;
+    background-color: #ffffff;
+    height: 100%;
+    z-index: 100000000000;
+}

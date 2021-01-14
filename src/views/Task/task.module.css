@@ -1,0 +1,11 @@
+.container {
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.container:last-child {
+    margin-bottom: 0;
+}
+
+.time {
+    color: #727272;
+}

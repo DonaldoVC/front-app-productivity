@@ -1,0 +1,32 @@
+.content {
+    background-color: #eeeeee;
+    border-radius: 10px;
+    min-height: 420px;
+}
+
+.button {
+    width: 150px;
+    margin-top: 40px;
+    text-align: left !important;
+}
+
+.description {
+    margin: 0 0 10px 18px;
+    width: -moz-calc(100% - (18px));
+    width: -webkit-calc(100% - (18px));
+    width: calc(100% - (18px));
+}
+
+.editDescription {
+    margin: 0 0 10px 18px;
+    resize: none;
+    width: -moz-calc(100% - (18px));
+    width: -webkit-calc(100% - (18px));
+    width: calc(100% - (18px));
+    min-height: 150px;
+    border-radius: 5px;
+}
+
+.close {
+    cursor: pointer;
+}

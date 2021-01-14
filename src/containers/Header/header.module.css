@@ -1,0 +1,11 @@
+.container {
+    height: 50px;
+    margin-bottom: 15px;
+    border-bottom-color: #989797;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+
+    text-align: center;
+
+    padding-top: 5px;
+}
