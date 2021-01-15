@@ -16,15 +16,15 @@ import moment from "moment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars, faClock, faTrash, faTimes, faCheck, faRedo} from "@fortawesome/free-solid-svg-icons";
 
-import {changeStatus, deleteTask, modifyTask, reset} from "../../actions/task.action";
+import {changeStatus, deleteTask, modifyTask, reset} from "../../../actions/task.action";
 
-import {formatTime} from "../../utils/format";
+import {formatTime} from "../../../utils/format";
 
-import {BIG, LIMIT, MID, SMALL} from "../../constants";
+import {BIG, LIMIT, MID, SMALL} from "../../../constants";
 
-import styles from './modal.module.css';
+import styles from './modify.module.css';
 
-const ModalContent = ({task, time, show, handleClose}) => {
+const ModalModify = ({task, time, show, handleClose}) => {
   const dispatch = useDispatch();
 
   const [editDescription, setEditDescription] = useState({
@@ -37,6 +37,7 @@ const ModalContent = ({task, time, show, handleClose}) => {
   });
   const [showPicker, setShowPicker] = useState(false);
 
+  // Confimación para eliminar tarea.
   const handleDeleteTask = () => {
     swal({
       title: "¿Desea eliminar la tarea?",
@@ -53,14 +54,17 @@ const ModalContent = ({task, time, show, handleClose}) => {
       });
   }
 
+  // Cambio de status
   const handleChangeStatus = (status) => {
     dispatch(changeStatus({...task, time, status}))
   }
 
+  // Reestablecer tarea
   const handleReset = () => {
     dispatch(reset(task))
   }
 
+  // Modificación de tarea.
   const handleUpdate = () => {
     setEditTime({...editTime, toEdit: false})
     setEditDescription({...editDescription, toEdit: false})
@@ -93,8 +97,9 @@ const ModalContent = ({task, time, show, handleClose}) => {
               <p>
                 <FontAwesomeIcon className="mr-2" icon={faBars}/>
                 Descripción
+                {task.status !== 2 &&
                 <Button className="ml-2" variant={"light"} size={"sm"}
-                        onClick={() => setEditDescription({...editDescription, toEdit: true})}>Editar</Button>
+                        onClick={() => setEditDescription({...editDescription, toEdit: true})}>Editar</Button>}
               </p>
               {task.description === '' &&
               <div className={styles.emptyDescription}>
@@ -104,7 +109,8 @@ const ModalContent = ({task, time, show, handleClose}) => {
 
               {!editDescription.toEdit && task.description !== '' ? (
                 <p className={`txt ${styles.description}`}
-                   onClick={() => setEditDescription({...editDescription, toEdit: true})}>
+                   onClick={() => setEditDescription({...editDescription, toEdit: task.status !== 2})}
+                   style={task.status !== 2 ? {cursor: 'pointer'} : {}}>
                   {task.description}
                 </p>
               ) : (
@@ -124,11 +130,14 @@ const ModalContent = ({task, time, show, handleClose}) => {
               <p>
                 <FontAwesomeIcon className="mr-2" icon={faClock}/>
                 Duración
+                {task.status !== 2 &&
                 <Button className="ml-2" variant={"light"} size={"sm"}
-                        onClick={() => setEditTime({...editTime, toEdit: true})}>Editar</Button>
+                        onClick={() => setEditTime({...editTime, toEdit: true})}>Editar</Button>}
               </p>
               {!editTime.toEdit && task.description !== '' ? (
-                <p className={`txt ${styles.description}`} onClick={() => setEditTime({...editTime, toEdit: true})}>
+                <p className={`txt ${styles.description}`}
+                   onClick={() => setEditTime({...editTime, toEdit: task.status !== 2})}
+                   style={task.status !== 2 ? {cursor: 'pointer'} : {}}>
                   {formatTime(task.estimated)}
                 </p>
               ) : (
@@ -149,16 +158,16 @@ const ModalContent = ({task, time, show, handleClose}) => {
 
                   {showPicker &&
                   <TimePicker value={moment(formatTime(task.time), "HH:mm:ss")} className={styles.picker}
-                    onChange={(value) => {
-                      if (moment(value).diff(moment().startOf('day'), 'seconds') <= LIMIT) {
-                        setEditTime({
-                          ...editTime,
-                          estimated: moment(value).diff(moment().startOf('day'), 'seconds')
-                        })
-                      } else {
-                        setEditTime({...task, estimated: 0, time: 0})
-                      }
-                    }}/>}
+                              onChange={(value) => {
+                                if (moment(value).diff(moment().startOf('day'), 'seconds') <= LIMIT) {
+                                  setEditTime({
+                                    ...editTime,
+                                    estimated: moment(value).diff(moment().startOf('day'), 'seconds')
+                                  })
+                                } else {
+                                  setEditTime({...task, estimated: 0, time: 0})
+                                }
+                              }}/>}
 
                   <Button variant={"success"} size={"sm"} className={styles.save}
                           onClick={handleUpdate}>Guardar</Button>
@@ -205,4 +214,4 @@ const ModalContent = ({task, time, show, handleClose}) => {
   )
 }
 
-export default ModalContent
+export default ModalModify;

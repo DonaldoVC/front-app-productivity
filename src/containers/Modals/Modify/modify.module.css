@@ -19,7 +19,6 @@
     width: -moz-calc(100% - (18px));
     width: -webkit-calc(100% - (18px));
     width: calc(100% - (18px));
-    cursor: pointer;
 }
 
 .editDescription {

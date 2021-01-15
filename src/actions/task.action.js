@@ -11,6 +11,7 @@ import {
   SAVE_TASK_ERROR
 } from "../constants";
 
+// Guardado de nueva tarea
 export const saveTask = (task) => {
   return async (dispatch) => {
     try {
@@ -46,6 +47,7 @@ export const saveTask = (task) => {
   }
 }
 
+// Guardado de 50 tareas en estatus "Finalizada"
 export const graph = () => {
   return async (dispatch) => {
     try {
@@ -82,6 +84,7 @@ export const graph = () => {
   }
 }
 
+// Obtención de tareas
 export const getTasks = () => {
   return async (dispatch) => {
     try {
@@ -117,6 +120,7 @@ export const getTasks = () => {
   }
 }
 
+// Modificación de tarea (descripción/tiempo estimado)
 export const modifyTask = (task) => {
   return async (dispatch) => {
     try {
@@ -152,6 +156,7 @@ export const modifyTask = (task) => {
   }
 }
 
+// Modificación de status
 export const changeStatus = (task) => {
   return async (dispatch) => {
     try {
@@ -187,6 +192,7 @@ export const changeStatus = (task) => {
   }
 }
 
+// Reestablecer tiempo de tarea
 export const reset = (task) => {
   return async (dispatch) => {
     try {
@@ -222,6 +228,7 @@ export const reset = (task) => {
   }
 }
 
+// Eliminación de tarea
 export const deleteTask = (task) => {
   return async (dispatch) => {
     try {
@@ -257,6 +264,7 @@ export const deleteTask = (task) => {
   }
 }
 
+// Guardado de nuevo orden de tarea según usuario.
 export const order = (task) => {
   return async (dispatch) => {
     try {

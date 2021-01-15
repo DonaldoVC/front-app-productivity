@@ -1,0 +1,9 @@
+.content {
+    background-color: #eeeeee;
+    border-radius: 10px;
+    min-height: 420px;
+}
+
+.close {
+    cursor: pointer;
+}

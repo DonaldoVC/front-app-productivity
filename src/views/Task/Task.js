@@ -10,12 +10,13 @@ import {faClock, faBars} from "@fortawesome/free-solid-svg-icons";
 
 import {formatTime} from "../../utils/format";
 
-import ModalContent from "../../containers/Modal";
+import ModalModify from "../../containers/Modals/Modify";
 
 import {changeStatus} from "../../actions/task.action";
 
-import styles from './task.module.css';
 import {ClosePage} from "../../App";
+
+import styles from './task.module.css';
 
 const Task = ({task, filter}) => {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const Task = ({task, filter}) => {
     setTime(task.time);
   }, [task])
 
+  // Temporizador de tarea en ejecución
   useEffect(() => {
     if (task.status === 4) {
       const interval = setInterval(() => {
@@ -49,6 +51,7 @@ const Task = ({task, filter}) => {
     }
   }, [dispatch, task, time])
 
+  // Al cerrar página guardar status/tiempo en api
   useEffect(() => {
     if (closingPage && task.status === 4) {
       dispatch(changeStatus({...task, time, status: 3}))
@@ -74,7 +77,7 @@ const Task = ({task, filter}) => {
           </Card.Body>
         </Card>
 
-        <ModalContent show={show} task={task} time={time} handleClose={handleClose}/>
+        <ModalModify show={show} task={task} time={time} handleClose={handleClose}/>
       </>
     )
   } else {

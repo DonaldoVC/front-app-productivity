@@ -8,6 +8,7 @@ import {
   SAVE_SECTION_ERROR
 } from "../constants";
 
+// Guardado de nueva lista
 export const saveSection = (section) => {
   return async (dispatch) => {
     try {
@@ -43,6 +44,7 @@ export const saveSection = (section) => {
   }
 }
 
+// Obtención de todas las listas
 export const getSections = () => {
   return async (dispatch) => {
     try {

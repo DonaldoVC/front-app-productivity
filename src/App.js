@@ -7,9 +7,11 @@ import Home from './containers/Home'
 import Header from "./containers/Header";
 import {Beforeunload} from "react-beforeunload";
 
+// context para saber cuando se cierra la página.
 export const ClosePage = createContext(false);
 
 function App() {
+  // Valor enviado a context
   const [closing, setClosing] = useState(false);
 
   return (

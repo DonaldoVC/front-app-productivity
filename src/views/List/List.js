@@ -20,7 +20,7 @@ import {order} from "../../actions/task.action";
 
 import {selectTask} from "../../selectors/task.selector";
 
-import ModalContent from "../../containers/ModalNew";
+import ModalNew from "../../containers/Modals/New";
 
 import Task from "../Task";
 
@@ -34,6 +34,7 @@ const List = ({section, completed, title}) => {
   const [filter, setFilter] = useState(0);
   const [show, setShow] = useState(false);
 
+  // Ordenamiento de tareas por orden / status
   useEffect(() => {
     task.all_tasks.sort((a, b) => a.order - b.order)
     task.all_tasks.sort((a, b) => b.status - a.status)
@@ -44,6 +45,7 @@ const List = ({section, completed, title}) => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
+  //Filtro de tareas en listas.
   const filterTask = (task) => {
     switch (filter) {
       case 1:
@@ -63,16 +65,19 @@ const List = ({section, completed, title}) => {
       return;
     }
 
+    // Ordenamiento de tareas según usuario
     const items = reorder(
       task.all_tasks,
       result.source.index,
       result.destination.index
     );
 
+    // Envio de nuevo orden a WS
     dispatch(order(items))
     setAllTask(items);
   }
 
+  // Funcción de ordenamiento según usuario
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
 
@@ -119,7 +124,10 @@ const List = ({section, completed, title}) => {
                     )}
                   </Draggable>)}
                 {completed && allTask.map((task, index) => task.status === 2 &&
-                  <Task key={index} task={task} filter={true}/>)}
+                  <div key={index} className={styles.containerTask}>
+                    <Task task={task} filter={true}/>
+                  </div>
+                )}
               </Card.Body>
               {!completed &&
               <Button className={`txt ${styles.otherTask}`} variant={"light"} size={"sm"} onClick={handleShow}>
@@ -127,7 +135,7 @@ const List = ({section, completed, title}) => {
               </Button>}
             </Card>
 
-            {section && <ModalContent show={show} section={section} handleClose={handleClose}/>}
+            {section && <ModalNew show={show} section={section} handleClose={handleClose}/>}
           </div>
         )}
 

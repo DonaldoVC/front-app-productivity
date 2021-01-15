@@ -1,4 +1,4 @@
-
+// Formato de Tiempo (segundos a hora)
 export const formatTime = (time) => {
   const sec_num = parseInt(time, 10);
   const hour = `0${Math.floor(sec_num / 3600)}`;

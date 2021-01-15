@@ -3,6 +3,8 @@ import Loader from "react-loader-spinner";
 import styles from './loader.module.css';
 
 const LoaderShow = ({visible}) => {
+
+  // Estado para mostrar o no loader
   if (visible) {
     return (
       <div className={styles.loader}>

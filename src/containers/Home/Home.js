@@ -27,11 +27,13 @@ const Home = () => {
   const section = useSelector(selectSection);
   const loader = useSelector(selectLoader);
 
+  // Obtención de listado tareas/listas
   useEffect(() => {
     dispatch(getSections())
     dispatch(getTasks())
   }, [dispatch])
 
+  // Creación de nueva sección
   const handleNewSection = () => {
     swal({
       text: 'Nueva lista',
@@ -43,6 +45,7 @@ const Home = () => {
     }).then((name) => {
       if (!name) throw null;
 
+      // Guardado de lista / cerrado de alert
       dispatch(saveSection({name}))
       swal.stopLoading();
       swal.close();

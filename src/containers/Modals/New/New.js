@@ -13,16 +13,16 @@ import moment from "moment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars, faClock, faCheck, faTimes, faFileSignature} from "@fortawesome/free-solid-svg-icons";
 
-import {saveTask} from "../../actions/task.action";
-import {getSections} from "../../actions/section.action";
+import {saveTask} from "../../../actions/task.action";
+import {getSections} from "../../../actions/section.action";
 
-import {selectTask} from "../../selectors/task.selector";
+import {selectTask} from "../../../selectors/task.selector";
 
-import {BIG, MID, SMALL, LIMIT} from "../../constants";
+import {BIG, MID, SMALL, LIMIT} from "../../../constants";
 
-import {formatTime} from "../../utils/format";
+import {formatTime} from "../../../utils/format";
 
-import styles from './modalNew.module.css';
+import styles from './new.module.css';
 
 const defaultTask = {
   name: "",
@@ -32,7 +32,7 @@ const defaultTask = {
   section: ""
 }
 
-const ModalContent = ({section, show, handleClose}) => {
+const ModalNew = ({section, show, handleClose}) => {
   const dispatch = useDispatch();
 
   const [task, setTask] = useState(defaultTask);
@@ -40,10 +40,12 @@ const ModalContent = ({section, show, handleClose}) => {
 
   const taskSelect = useSelector(selectTask);
 
+  // Se añade el id de la sección en el json de la tarea
   useEffect(() => {
     setTask({...defaultTask, section: section._id})
   }, [section])
 
+  // Guardao de tarea
   const handleSave = () => {
     setTask({...defaultTask, section: section._id})
 
@@ -51,6 +53,7 @@ const ModalContent = ({section, show, handleClose}) => {
       dispatch(saveTask(task));
       if (taskSelect.lastStatus) dispatch(getSections())
       setTimeout(() => {
+        // Obtención de tarea (lista perteneiente)
         if (taskSelect.lastStatus) dispatch(getSections())
       }, 1000)
       handleClose();
@@ -135,4 +138,4 @@ const ModalContent = ({section, show, handleClose}) => {
   )
 }
 
-export default ModalContent
+export default ModalNew
