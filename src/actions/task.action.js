@@ -46,6 +46,42 @@ export const saveTask = (task) => {
   }
 }
 
+export const graph = () => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: LOADING,
+        loading: true
+      });
+
+      await axios.post(`${process.env.REACT_APP_API}/task/graph`, {});
+      const response = await axios.get(`${process.env.REACT_APP_API}/task`);
+
+      dispatch({
+        type: GET_TASKS,
+        all_tasks: response.data,
+        status: response.status
+      });
+
+      dispatch({
+        type: LOADING,
+        loading: false
+      });
+    } catch (e) {
+      dispatch({
+        type: SAVE_TASK_ERROR,
+        error: e,
+        status: 500
+      });
+
+      dispatch({
+        type: LOADING,
+        loading: false
+      });
+    }
+  }
+}
+
 export const getTasks = () => {
   return async (dispatch) => {
     try {

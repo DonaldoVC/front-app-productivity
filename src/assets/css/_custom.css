@@ -1,3 +1,4 @@
 .txt {
     font-size: 12px !important;
+    white-space: pre-line;
 }
