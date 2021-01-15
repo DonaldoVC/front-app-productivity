@@ -5,6 +5,9 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faChartBar} from "@fortawesome/free-solid-svg-icons";
+
 import {graph} from "../../actions/task.action";
 
 import styles from './header.module.css';
@@ -28,7 +31,9 @@ const Header = () => {
       <div className={styles.container}>
         <Row>
           <Col>
-            <Button className="float-left" variant={"outline-primary"} onClick={handleShow}>Ver gráfica</Button>
+            <Button className="float-left" variant={"outline-primary"} onClick={handleShow}>
+              <FontAwesomeIcon onClick={handleClose} icon={faChartBar}/> Ver gráfica
+            </Button>
             <span>Productivity APP</span>
             <Button className="float-right" variant={"outline-primary"} onClick={handleCreate}>Precargar tareas</Button>
           </Col>
